@@ -30,3 +30,6 @@ On the list of #to do# is to split the QTY column up into a QTY and PRICE<br>
 For intance "2 x $3.19/each" =>  QTY = 2, UNITS = "count", PRICE = $3.19
 
 And "0.54 lbs x $8.98/each"  =>  QTY 0.54, UNITS = "lbs", PRICE = $8.98  (I'm writing in lbs because # has nearly stopped meaning pounds in modern usage - sad but true)
+
+# License
+I'm using the MIT License because that is what Greasemonkey uses and I figure; why not? ¯\\_(ツ)_/¯
