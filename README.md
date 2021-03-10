@@ -18,6 +18,7 @@ Here is a sample data set
 
 ![image](https://user-images.githubusercontent.com/1949042/110583400-42440000-8133-11eb-939c-ffdab40db8c5.png)
 
+The extended price does not always match the unit price because it contains discounts and coupons which are not shown in the CSV file.  This shopping trip was in Texas where food has no tax anbd includes no non-food items so I don't have an example of that kind of data either.
 
 On the list of #to do# is to split the QTY column up into a QTY and PRICE<br>
 For intance "2 x $3.19/each" =>  QTY = 2, UNITS = "count", PRICE = $3.19
