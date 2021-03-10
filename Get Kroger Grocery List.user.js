@@ -10,19 +10,6 @@
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // ==/UserScript==
 
-/**
- ** My reference notes
- **
- ** Fix Firefox warning of slow scripts https://support.mozilla.org/en-US/kb/warning-unresponsive-script
- **
- ** GreaseMonkey wiki https://wiki.greasespot.net/Main_Page
- ** GreaseMonkey docs http://greasemonkey.win-start.de/
- ** Using jQuery with Greasemonkey https://gist.github.com/bouil/5509113
- **
- ** http://stackoverflow.com/questions/2246901/how-can-i-use-jquery-in-greasemonkey-scripts-in-google-chrome/12751531#12751531
- **
- **/
-
 "use strict";
 var debug = false;
 
@@ -109,8 +96,8 @@ function log( pMessage ){
 function save( pMessage, pDate ){
   console.log( pMessage );
 	pDate = pDate.replaceAll( "/", "-" );			// Fix illegal file systrem charaters
-	pMessage = pMessage.replaceAll( "®", "" );		// Fix dumb mark
-	pMessage = pMessage.replaceAll( "’", "'" );	// Fis stupid single quotes
+	pMessage = pMessage.replaceAll( "Â®", "" );		// Fix dumb mark
+	pMessage = pMessage.replaceAll( "â€™", "'" );	// Fis stupid single quotes
 
   // var container = document.querySelector( "textarea" );
   var anchor = document.querySelector( "a" );
