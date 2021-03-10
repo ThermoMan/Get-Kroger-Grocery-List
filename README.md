@@ -11,7 +11,7 @@ If you ned to install GreaseMonkey first, click <a href="https://addons.mozilla.
 <br>1. Once installed log in to your Kroger (or one of thier family of stores, it mgiht work there too) account and navigate to your Purchase History page.
 <br>2. Then click on the <em>See Order Details</em> link and when that page opens and finishes painting you will see a gray button in the upper left of the page that says "Get List".
 <br>3. Click it.  Momentarily you will be prompted to save your CSV file.
-<br>Presently you do have to re-load the Kroger page to reset the script (press shift and the reload button or shift+F5).
+<br>Presently it only works for <em>In-store purchases</em>, but not for <em>Pick ups</em>.
 
 # The why of this script
 <br>Kroger has made it difficult to use the other Puppeteer based tools to download your shopping history by detecting and rejecting the headless browser.  They provide no native tool to make life easier.
