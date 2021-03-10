@@ -5,12 +5,14 @@
 <br>1 Click the "Get Kroger Grocery List.user.js" link. 
 <br>2 Click the button named "Raw".  If you have Greasemonkey installed it will take over from tehre and offer to install the script.
 
+If you ned to install GreaseMonkey first, click <a href="https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/">here</a> for the Mozilla Firefox Add-Ons "app store".
+
 # The why of this script
 <br>Kroger has made it difficult to use the other Puppeteer based tools to download your shopping history by detecting and rejecting the headless browser.  They provide no native tool to make life easier.
 
 # Status
 <br>This is a beta version of the export, but I wanted to get it out here so others could eyeball it and make suggestions.  Or heck, throw in some bug fixes. :D
-
+<br>So far this is only tested on Firefox and Windows 10.  If you have a Mac and woudl like to contribute, or just identify issues, please do.  If you're using 
 
 Here is a sample data set
 
