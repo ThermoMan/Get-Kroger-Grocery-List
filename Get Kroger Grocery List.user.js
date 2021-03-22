@@ -1,11 +1,10 @@
 // ==UserScript==
 // @name         Get Kroger Grocery List
 // @namespace    PrettyDarnUseful
-// @version      0.1
+// @version      0.2
 // @description  Get Kroger Grocery List
 // @author       ThermoMan
-// @match        https://www.kroger.com/mypurchases/detail/*
-// @grant        none
+// @match        https://www.(dillons|kroger).com/mypurchases/detail/*
 // @run-at       document-end
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // ==/UserScript==
@@ -14,16 +13,16 @@
 var debug = false;
 
 var start = function( jQuery ){
-  log( "Here is my start function" );
   addButton( "Get List" );
 };
 
 
 function buttonClickAction(){
-  console.clear();
+  log( "clear" );
   log( "Trying to fetch the grocery shopping list." );
+
   // So the whitespace separates the "siblings" in text.
-  var tripDate = $( "div[class='PurchaseCard_wrap-fields-outer py-0 px-16']" ).find( "span[class='kds-Text--m']" ).find( "br" ).get(0).nextSibling.nextSibling.nodeValue;
+  var tripDate = $( "span:contains('Order date:')" ).find( "br" ).get(0).nextSibling.nextSibling.nodeValue;
 
   log( "Date of purchase was: " + tripDate );
 
@@ -31,21 +30,43 @@ function buttonClickAction(){
   var saveString = "date, name, size, price, qty, ext_price\n";
   $( "div[class='PH-ProductCard-container w-full p-16']" ).each( function(){
     ii++;
-    var productName = $(this).find( "a[class='kds-Link kds-Link--inherit']" ).text();
+    var product;
+    var productName;
+    var productSize;
+    var extendedPrice;
+    var quantity;
+    var unitPrice;
+
+    var message = $(this)[0].childNodes[0].childNodes[0].innerText;
+    if( message == "Out-of-Stock" ){
+			product = $(this)[0].childNodes[1].childNodes[1].childNodes[0].childNodes[0];
+      extendedPrice = 0;
+      quantity = 0;
+      unitPrice = 0;
+    }
+    else if( message == "Substitution" ){
+			product = $(this)[0].childNodes[1].childNodes[1].childNodes[0].childNodes[0];
+    }
+    else {
+      product = $(this)[0].childNodes[0].childNodes[1].childNodes[0].childNodes[0];
+    	message = "Purchase";
+    }
+
+    productName = product.childNodes[0].childNodes[0].innerText;
     log( "Product "+ii+" name was: " + productName );
 
-    var productSize = $(this).find( "span[class='kds-Text--xs PH-ProductCard-item-description-size text-default-500 mb-4']" ).text();
+    productSize = product.childNodes[1].innerText;
     log( "Product "+ii+" size was: " + productSize );
 // Later on separate units  "25.4 oz"   "30 fl oz"  "2.5 gal"   "6 ct / 3 oz"    "1 lb"
 
-    var extendedPrice = $(this).find( "div[class='PH-ProductCard-Total flex flex-col items-start mb-8 lg:w-1/3']" )[0].firstChild.value;
-    log( "Product "+ii+" extended price was: " + extendedPrice );
-
-    var quantity = $(this).find( "span[class='kds-Text--s text-default-500 body-xs']" ).text();
-    log( "Product "+ii+" quantity was: " + quantity );
-
-    var unitPrice = $(this).find( "span[class='kds-Text--s text-default-500 body-xs']" ).find( "span" ).text();
-    log( "Product "+ii+" unit price was: " + unitPrice );
+    if( message == "Substitution" || message == "Purchase" ){
+	    extendedPrice = $(this).find( "div[class='PH-ProductCard-Total flex flex-col items-start mb-8 lg:w-1/3']" )[0].firstChild.value;
+	    quantity = $(this).find( "span[class='kds-Text--s text-default-500 body-xs']" ).text();
+      unitPrice = $(this).find( "span[class='kds-Text--s text-default-500 body-xs']" ).find( "span" ).text();
+    }
+	  log( "Product "+ii+" extended price was: " + extendedPrice );
+	  log( "Product "+ii+" quantity was: " + quantity );
+	  log( "Product "+ii+" unit price was: " + unitPrice );
 
     saveString = saveString + tripDate + "," + productName + "," + productSize + "," + unitPrice + "," + quantity + "," + extendedPrice  + "\n";
   });
@@ -88,22 +109,28 @@ function addButton( text ){
 // This function only writes to the console if debug is true.
 function log( pMessage ){
   if( debug ){
-    console.debug( pMessage );
+    if( pMessage == "clear" ){
+      console.clear();
+    }
+    else {
+    	console.debug( pMessage );
+    }
   }
 }
 
-// This function always writes to the console
+// This function always writes to the console and saves the data as a CSV file.
 function save( pMessage, pDate ){
   console.log( pMessage );
-	pDate = pDate.replaceAll( "/", "-" );			// Fix illegal file systrem charaters
-	pMessage = pMessage.replaceAll( "®", "" );		// Fix dumb mark
-	pMessage = pMessage.replaceAll( "’", "'" );	// Fis stupid single quotes
+  var dateParts = pDate.split( "/" );	// Split the date up and rearrange it into a logical order while removing illegal file system chracters
+  var sDate = dateParts[2] + "-" + dateParts[0].padStart( 2, "0" ) + "-" + dateParts[1].padStart( 2, "0" );
+  
+  pMessage = pMessage.replaceAll( "®", "" );	// Remove dumb mark
+	pMessage = pMessage.replaceAll( "’", "'" );	// Fix stupid single quotes
 
-  // var container = document.querySelector( "textarea" );
   var anchor = document.querySelector( "a" );
   anchor.onclick = function(){
     anchor.href = "data:text/plain;charset=utf-8," + encodeURIComponent( pMessage );
-    anchor.download = "export-"+pDate+".csv";
+    anchor.download = "Grocery Export "+sDate+".csv";
   }
   anchor.click();
 
