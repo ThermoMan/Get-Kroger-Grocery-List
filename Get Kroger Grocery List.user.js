@@ -53,7 +53,7 @@
 
 (function() {
   'use strict';
-  var debug = true;
+  var debug = false;
 
   // Log function for debugging
   function log( pMessage ){
@@ -540,3 +540,4 @@ log( 'qtyNum = packCountNum * packSizeNum = ' + qtyNum );
 
   window.setTimeout(triggerThings, 1500);
 })();
+
